@@ -12,4 +12,5 @@
 - [hw4](https://github.com/ml-dafe/ml_mipt_dafe/blob/main/07_Self_Supervision/homework/README.md) - обучение архитекутуры типа ProtoNet для Omniglot, а также предобучение с помощью метода SimCLR
 - [hw5](https://github.com/ml-dafe/ml_mipt_dafe/blob/main/09_Detection/homework/readme.md) - модель селф-верификации на основе архитектуры Siamese Neural Network
 - [hw6](https://github.com/ml-dafe/ml_mipt_dafe/blob/main/11_RL_base/homework/readme.md) - модель агента для игры в окружении FlappyBird
+
 Внутри директорий есть подробный pdf-отчёт по каждому заданию с ссылками на wandb-отчёты.
