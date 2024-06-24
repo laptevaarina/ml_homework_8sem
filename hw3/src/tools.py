@@ -2,9 +2,14 @@ import torch
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+BOS_TOKEN = '<s>'
+EOS_TOKEN = '</s>'
+
+
 def draw(data, x, y):
     plt.gcf().set_size_inches(30, 30)
     sns.heatmap(data, xticklabels=x, square=True, yticklabels=y, vmin=0.0, vmax=1.0, cbar=False)  #, ax=ax)
+
 
 def get_device():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -30,13 +35,20 @@ def tokens_to_words(word_field, sent):
     return sentence
 
 
+def words_to_tokens(word_field, sent):
+    sentence = [word_field.vocab.stoi[BOS_TOKEN]]
+    for elem in sent:
+        sentence.append(word_field.vocab.stoi[elem])
+    sentence.append(word_field.vocab.stoi[EOS_TOKEN])
+    return torch.tensor(sentence)[:, None]
+
+
 def subsequent_mask(size):
     mask = torch.ones(size, size, device=DEVICE).triu_()
     return mask.unsqueeze(0) == 0
 
 
 def make_mask(source_inputs, target_inputs, pad_idx):
-    # TODO: че с маской
     source_mask = (source_inputs != pad_idx).unsqueeze(-2)
     target_mask = (target_inputs != pad_idx).unsqueeze(-2)
     target_mask = target_mask & subsequent_mask(target_inputs.size(-1)).type_as(target_mask)
@@ -55,19 +67,3 @@ def convert_batch(batch, pad_idx=1):
 
     return source_inputs, target_inputs, source_mask, target_mask
 
-
-# визуализация механизма внимания
-def visualize_attention(model, word_field, elem, num):
-    source_input, target_input_ref, source_mask, target_mask_ref = convert_batch(elem)
-    encoder_output = model.encoder(source_input, source_mask)
-
-    words = tokens_to_words(word_field, elem.source)
-    for layer in range(4):
-        print("Encoder Layer", layer + 1)
-        for h in range(4):
-            print(model.encoder._blocks[layer]._self_attn._attn_probs)
-            plt.title(f"Encoder Layer {layer + 1}, Attention Head {h + 1}")
-            draw(model.encoder._blocks[layer]._self_attn._attn_probs[0, h].data.cpu(), words, words)
-            plt.tick_params(labelsize=6)
-            plt.savefig(f"../visualize_attention/example_{num}/encoder_layer_{layer+1}/attn_head_{h+1}.jpg")
-            # plt.show()

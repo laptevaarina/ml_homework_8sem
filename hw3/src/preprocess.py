@@ -10,10 +10,7 @@ from torchtext.data import Field, Example, Dataset, BucketIterator
 
 from navec import Navec
 
-from tools import DEVICE
-
-BOS_TOKEN = '<s>'
-EOS_TOKEN = '</s>'
+from tools import DEVICE, BOS_TOKEN, EOS_TOKEN
 
 path = '../data/navec_hudlit_v1_12B_500K_300d_100q.tar'
 navec = Navec.load(path)

@@ -213,6 +213,7 @@ class EncoderDecoder(nn.Module):
         super(EncoderDecoder, self).__init__()
 
         self.d_model = d_model
+        ''' Общие матрицы предобученных эмбеддингов navec_300d_12B (задания №4 и №6) '''
         self._emb = nn.Sequential(
                     NavecEmbedding(navec),
                     PositionalEncoding(d_model, dropout_rate)

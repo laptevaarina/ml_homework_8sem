@@ -105,6 +105,7 @@ if __name__ == "__main__":
 
     pad_idx = word_field.vocab.stoi['<pad>']
 
+    ''' Добавление коэффициента label_smoothing (задание №5) '''
     criterion = nn.CrossEntropyLoss(ignore_index=pad_idx, label_smoothing=smoothing_coefficient).to(DEVICE)
 
     # criterion = LabelSmoothing(len(word_field.vocab), pad_idx, 0.4).to(DEVICE)
